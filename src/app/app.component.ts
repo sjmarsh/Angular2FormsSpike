@@ -2,6 +2,7 @@ import { Component, OnInit }                  from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { Member } from './member';
+import { maxDateValidator } from './max-date-validator.directive';
 
 @Component({
   selector: 'app-root',
@@ -53,7 +54,8 @@ export class AppComponent implements OnInit {
         Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
       ]],
       'dateJoined': [this.member.dateJoined, [
-        Validators.required
+        Validators.required,
+        maxDateValidator(new Date())
       ]],
       'isCurrent': [this.member.isCurrent, [
         Validators.required
@@ -106,6 +108,7 @@ export class AppComponent implements OnInit {
     },
     'dateJoined': {
       'required': 'Date Joined is required.',
+      'maxDate':  'Date cannot be in the future.'
     },
     'isCurrent':{
       'required': 'Is Current required.'
