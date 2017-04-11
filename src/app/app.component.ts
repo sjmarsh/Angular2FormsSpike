@@ -22,7 +22,6 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.member = new Member();
     this.memberList = new Array<Member>();
-
     this.buildForm();
   }
 
@@ -42,11 +41,11 @@ export class AppComponent implements OnInit {
     this.memberForm = this.fb.group({
       'firstName': [this.member.firstName, [
         Validators.required, 
-        Validators.minLength(5), 
+        Validators.minLength(2), 
         Validators.maxLength(15)]],
       'lastName': [this.member.lastName, [
         Validators.required,
-        Validators.minLength(5), 
+        Validators.minLength(2), 
         Validators.maxLength(15)
       ]],
       'email': [this.member.email, [
@@ -63,7 +62,7 @@ export class AppComponent implements OnInit {
 
     this.memberForm.valueChanges.subscribe(data => this.onValueChanged(data))
 
-     this.onValueChanged(); // (re)set validation messages now
+    this.onValueChanged(); // (re)set validation messages now
   }
 
   onValueChanged(data?: any) {
@@ -93,17 +92,17 @@ export class AppComponent implements OnInit {
   validationMessages = {
     'firstName': {
       'required':      'First Name is required.',
-      'minlength':     'First Name must be at least 5 characters long.',
+      'minlength':     'First Name must be at least 2 characters long.',
       'maxlength':     'First Name cannot be more than 15 characters long.'
     },
     'lastName': {
       'required':      'Last Name is required.',
-      'minlength':     'Last Name must be at least 5 characters long.',
+      'minlength':     'Last Name must be at least 2 characters long.',
       'maxlength':     'Last Name cannot be more than 15 characters long.'
     },
     'email':{
-        'required': 'Email Address is required.', 
-        'pattern': 'Must be a valid Email Address.'
+      'required': 'Email Address is required.', 
+      'pattern': 'Must be a valid Email Address.'
     },
     'dateJoined': {
       'required': 'Date Joined is required.',
