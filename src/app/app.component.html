@@ -63,8 +63,8 @@
       <td>{{memberItem.firstName}}</td>
       <td>{{memberItem.lastName}}</td>
       <td>{{memberItem.email}}</td>
-      <td>{{memberItem.dateJoined}}</td>
-      <td>{{memberItem.isCurrent}}</td>
+      <td>{{memberItem.dateJoined | date : 'dd-MM-yyyy'}}</td>
+      <td>{{memberItem.isCurrent ? 'Yes' : 'No'}}</td>
     </tr>
   </tbody>
 </table>
