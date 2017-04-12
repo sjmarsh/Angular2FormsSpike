@@ -17,6 +17,8 @@ export class AppComponent implements OnInit {
   member: Member;
   memberList: Array<Member>;
   submitted = false;
+  isEditing = false;
+  nextId = 1;
 
   constructor(private fb: FormBuilder) { }
 
@@ -24,22 +26,53 @@ export class AppComponent implements OnInit {
     this.member = new Member();
     this.memberList = new Array<Member>();
     this.buildForm();
+
+    // initialise some data
+    let bob = new Member();
+    bob.id = 1;
+    bob.firstName = 'Bob';
+    bob.lastName = 'Smith';
+    bob.email = 'bob@smith.com';
+    bob.dateJoined = new Date(2001,10, 2);
+    bob.isCurrent = true;
+    this.memberList.push(bob);
   }
 
   createNewMember(): void {
     this.member = new Member();
     this.buildForm();
+    this.isEditing = false;
+  }
+
+  editMember(event: any, memberToEdit: Member){
+    event.stopPropagation();
+    this.isEditing = true;
+    this.member = memberToEdit;
+    this.member.dateJoined = new Date(memberToEdit.dateJoined);
+    this.buildForm();
+    return false;
   }
 
   onSubmit() {  
     this.submitted = true;
-    let memberToAdd = new Member();
-    Object.assign(memberToAdd, this.memberForm.value);
-    this.memberList.push(memberToAdd);
+    if(this.isEditing){
+      let updatedValue = this.memberForm.value;
+      let existingValue = this.memberList.find(m => m.id === updatedValue.id);
+      Object.assign(existingValue, updatedValue);
+    }
+    else{
+      let memberToAdd = new Member();
+      Object.assign(memberToAdd, this.memberForm.value);
+      this.nextId += 1;
+      memberToAdd.id = this.nextId; 
+      this.memberList.push(memberToAdd);
+    }
+    this.isEditing = false;
   }
 
   buildForm() : void {
     this.memberForm = this.fb.group({
+      'id': [this.member.id, []],
       'firstName': [this.member.firstName, [
         Validators.required, 
         Validators.minLength(2), 
